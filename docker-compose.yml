@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  #build:
+   #   context: ./Server
+    #  dockerfile: Dockerfile.dev
+    #container_name: backend
+    #ports:
+     # - "3001:3001"
+    #volumes:
+     # - ./Server:/app
+    #depends_on:
+     # - mongo
+    #environment:
+     # - MONGO_URL=mongodb://mongo:27017/TodoList
+
+  backend:
+    build:
+      context: ./Server
+      dockerfile: Dockerfile.dev
+    container_name: backend
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./Server:/app
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/TodoList
+    command: npx nodemon --legacy-watch index.js
+
+
+  frontend:
+    build:
+      context: ./todolist
+    container_name: frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+volumes:
+  mongo-data:
