@@ -21,7 +21,7 @@ jobs:
 
       - name: 🐳 Build & Push Backend Image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/git-todo-backend ./Server
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/git-todo-backend ./Server/Dockerfile.dev
           docker push ${{ secrets.DOCKER_USERNAME }}/git-todo-backend
 
       - name: 🐳 Build & Push Frontend Image
