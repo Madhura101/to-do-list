@@ -21,10 +21,11 @@ jobs:
 
       - name: 🐳 Build & Push Backend Image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/git-todo-backend ./backend
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/git-todo-backend ./Server
           docker push ${{ secrets.DOCKER_USERNAME }}/git-todo-backend
 
       - name: 🐳 Build & Push Frontend Image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/tgit-odo-frontend ./frontend
-          docker push ${{ secrets.DOCKER_USERNAME }}/tgit-odo-frontend
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/git-todo-frontend ./todolist
+          docker push ${{ secrets.DOCKER_USERNAME }}/git-todo-frontend
+
