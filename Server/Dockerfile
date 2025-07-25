@@ -1,22 +1,20 @@
+# Use Node.js Alpine as base image
 FROM node:18-alpine
 
 # Set working directory inside the container
 WORKDIR /app
 
-# Copy only package files first for efficient caching
+# Copy only package files first for efficient Docker caching
 COPY package*.json ./
 
-# Install dependencie
+# Install only production dependencies
+RUN npm install --omit=dev
 
-# Copy the rest of the application code
+# Copy rest of the application code
 COPY . .
 
-# Copy the wait-for script into the container
-# COPY wait-for.sh /wait-for.sh
-# RUN chmod +x /wait-for.sh
-
-# Expose backend port
+# Expose the backend port
 EXPOSE 3001
 
-# Wait for MongoDB and then start the app
-CMD ["npm", "start"]
+# Run the backend using Node.js in production
+CMD ["node", "index.js"]
