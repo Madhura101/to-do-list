@@ -6,7 +6,8 @@ on:
       - main
 
 jobs:
-  build-push-deploy:
+  build-and-push:
+    name: 🛠️ Build & Push Docker Images
     runs-on: ubuntu-latest
 
     steps:
@@ -28,3 +29,24 @@ jobs:
         run: |
           docker build -t ${{ secrets.DOCKER_USERNAME }}/git-todo-frontend ./todolist
           docker push ${{ secrets.DOCKER_USERNAME }}/git-todo-frontend
+
+  deploy-to-k8s:
+    name: 🚀 Deploy to Local K8s (Kind)
+    runs-on: self-hosted
+    needs: build-and-push
+
+    steps:
+      - name: ⬇️ Checkout Code
+        uses: actions/checkout@v3
+
+      - name: 📦 Set Kubernetes Context (optional for Kind)
+        run: |
+          kubectl config use-context kind-kind
+
+      - name: 📦 Deploy Backend to K8s
+        run: |
+          kubectl set image deployment/backend backend=${{ secrets.DOCKER_USERNAME }}/git-todo-backend --namespace=my-namespace
+
+      - name: 📦 Deploy Frontend to K8s
+        run: |
+          kubectl set image deployment/frontend frontend=${{ secrets.DOCKER_USERNAME }}/git-todo-frontend --namespace=my-namespace
