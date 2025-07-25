@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-and-push:
+  build-push-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -29,3 +29,12 @@ jobs:
           docker build -t ${{ secrets.DOCKER_USERNAME }}/git-todo-frontend ./todolist
           docker push ${{ secrets.DOCKER_USERNAME }}/git-todo-frontend
 
+      - name: ⚙️ Set up Kubeconfig
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.KUBECONFIG_DATA }}" > $HOME/.kube/config
+
+      - name: 🚀 Deploy to Kubernetes
+        run: |
+          kubectl set image deployment/backend backend=${{ secrets.DOCKER_USERNAME }}/git-todo-backend --namespace=my-namespace
+          kubectl set image deployment/frontend frontend=${{ secrets.DOCKER_USERNAME }}/git-todo-frontend --namespace=my-namespace
