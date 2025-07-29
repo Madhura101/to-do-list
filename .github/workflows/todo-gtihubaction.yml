@@ -67,11 +67,11 @@ jobs:
 
       - name: 📄 Apply Backend Service
         run: |
-          kubectl apply -f ./k8s/backend-service.yaml --namespace=my-namespace
+          kubectl apply -f ./k8s/backend-service.yml --namespace=my-namespace
 
       - name: 📄 Apply Frontend Service
         run: |
-          kubectl apply -f ./k8s/frontend-service.yaml --namespace=my-namespace
+          kubectl apply -f ./k8s/frontend-service.yml --namespace=my-namespace
 
       - name: 📦 Deploy Backend to K8s
         run: |
