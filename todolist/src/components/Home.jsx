@@ -54,7 +54,7 @@
 
 
 import React, { useState, useEffect } from 'react';
-import api from './api';
+import api from '../api';
 import Create from './Create';
 import { BsFillCheckCircleFill, BsCircleFill, BsFillTrashFill } from 'react-icons/bs';
 
