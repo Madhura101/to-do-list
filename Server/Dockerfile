@@ -10,8 +10,11 @@ COPY package*.json ./
 # Install only production dependencies
 RUN npm install --omit=dev
 
-# Copy rest of the application code
+# Copy rest of the application code including .env
 COPY . .
+
+# Copy .env file explicitly (optional if already in context)
+COPY .env .env
 
 # Expose the backend port
 EXPOSE 3001
